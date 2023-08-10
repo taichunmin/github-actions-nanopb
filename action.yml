@@ -1,0 +1,14 @@
+name: GitHub Actions Nanopb
+author: CHUN-MIN, TAI <taichunmin@gmail.com>
+description: Nanopb is a small code-size Protobuf implementation in ansi C. It fits any memory restricted system.
+branding:
+  icon: code
+  color: gray-dark
+inputs:
+  command:
+    description: "Command to execute"
+    required: true
+    default: "/nanopb/generator/nanopb_generator.py --version"
+runs:
+  using: "docker"
+  image: "docker://taichunmin/github-actions-nanopb:latest"

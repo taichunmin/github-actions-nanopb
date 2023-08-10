@@ -1,0 +1,31 @@
+name: Test Actions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Retrieve runner uid and gid
+        id: uid-gid
+        run: |
+          echo "uid=$(id -u)" >> $GITHUB_OUTPUT
+          echo "gid=$(id -g)" >> $GITHUB_OUTPUT
+      - name: Test the action
+        uses: taichunmin/github-actions-nanopb@v1
+        env:
+          UID: ${{ steps.uid-gid.outputs.uid }}
+          GID: ${{ steps.uid-gid.outputs.gid }}
+        with:
+          command: |
+            pwd
+            /nanopb/generator/nanopb_generator.py example.proto
+            chown $UID:$GID *.pb.h *.pb.c
+      - name: Print compiled files
+        run: |
+          id
+          pwd
+          ls -al *.pb.h *.pb.c
